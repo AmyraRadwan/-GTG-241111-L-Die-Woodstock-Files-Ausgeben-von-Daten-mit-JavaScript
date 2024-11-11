@@ -50,13 +50,10 @@ fetch(url)
 		}
 
 		// 13. Weiterverarbeitung mit getData
-		
 
-		appendValues(getCell(0,2));
-		
-		appendValues(getRows(0,2));
-		
-		appendValues(getColumns(1));
+
+		appendValues(mergeColumns([0,1,3]));
+
 
 		// 14. Fehlerbehandlung für JSON-Parsing
 	} catch (error) {
@@ -101,6 +98,25 @@ function getColumns(columnStart = 0, columnEnd = Object.values(data[0]).length) 
 // Helper-Funktion, die eine bestimmte Zelle getted (row = Zeile, column = Spalte)
 function getCell(row, column) {
 	return [[getRow(row)[0][column]]];
+}
+
+
+// Helper-Funktion, die mehrere Columns in einen Array schreibt, übergeben wird ein Array mit columns z.B. [1, 2, 3]
+function mergeColumns(columns = []) {
+	var res = new Array();
+	for(i = 0; i < columns.length; i++){
+		res.push([].concat.apply([], getColumn(columns[i])));	
+	}
+	return res;
+}
+
+// Helper-Funktion, die mehrere Rows in einen Array schreibt, übergeben wird ein Array mit rows z.B. [1, 2, 3]
+function mergeRows(rows = []) {
+	var res = new Array();
+	for(i = 0; i < rows.length; i++){
+		res.push([].concat.apply([], getRows(rows[i])));	
+	}
+	return res;
 }
 
 // Helper-Funktion, die einen Array von values an ein Objekt (default = "output") anhängt. Dabei werden die Objekte zeilenweise an eine wrapperClass (default = "wrapper") angehängt.
